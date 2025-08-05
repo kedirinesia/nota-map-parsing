@@ -9,53 +9,60 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Oval Shape Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const OvalShapePage(),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DShapeUpright(),
     );
   }
 }
 
-class OvalShapePage extends StatelessWidget {
-  const OvalShapePage({super.key});
+class DShapeUpright extends StatelessWidget {
+  const DShapeUpright({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Oval Shape'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Oval Shape Serong',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 30),
-            Transform.rotate(
-              angle: 0.5, // Rotasi dalam radian (sekitar 30 derajat)
-              child: Container(
-                width: 400,
-                height: 200,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.elliptical(200, 100)),
-                ),
-              ),
-            ),
-          ],
+      backgroundColor: Colors.white,
+      body: Align(
+        alignment: Alignment.centerLeft,
+        child: ClipPath(
+          clipper: DClipper(),
+          child: Container(
+            width: screenWidth * 5.0, // Lebar diperbesar jauh lebih besar ke kanan
+            height: 600,
+            color: const Color(0xFFB365E0), // Warna ungu
+          ),
         ),
       ),
     );
   }
+}
+
+class DClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final Path path = Path();
+
+    // Mulai dari kiri atas
+    path.moveTo(0, 0);
+
+    // Garis lurus ke kiri bawah
+    path.lineTo(0, size.height);
+
+    // Lengkungan sisi kanan (dari bawah ke atas) - diperpanjang ke kanan
+    path.quadraticBezierTo(
+      size.width * 2.0, // Titik kontrol cembung jauh ke kanan
+      size.height / 1,
+      0,
+      0,
+    );
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
