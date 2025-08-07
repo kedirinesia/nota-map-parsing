@@ -30,9 +30,9 @@ class DShapeUpright extends StatelessWidget {
         child: ClipPath(
           clipper: DClipper(),
           child: Container(
-            width: screenWidth * 5.0, // Lebar diperbesar jauh lebih besar ke kanan
+            width: screenWidth * 5.0, // Lebar diperbes
             height: 600,
-            color: const Color(0xFFB365E0), // Warna ungu
+            color: const Color(0xFFB365E0), // Warna  
           ),
         ),
       ),
